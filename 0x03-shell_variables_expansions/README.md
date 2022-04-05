@@ -1,1 +1,1 @@
-My Readme for variable expansions
+describing what each script is doing
