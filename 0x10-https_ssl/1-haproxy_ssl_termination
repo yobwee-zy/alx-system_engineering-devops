@@ -1,0 +1,24 @@
+global
+    log 127.0.0.1 local0 notice
+    maxconn 2000
+    user haproxy
+    group haproxy
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    retries 3
+    option redispatch
+    timeout connect  5000
+    timeout client  10000
+    timeout server  10000
+frontend http
+    bind *:80
+    bind *:443 ssl crt /etc/letsencrypt/live/www.realyobweezytech/merged.pem
+    http-request redirect scheme https unless { ssl_fc }
+    default_backend web-backend
+backend web-backend
+    balance roundrobin
+    server 13623-web-01 54.196.42.116:80 check
+    server 13623-web-02 54.84.202.113:80 check
